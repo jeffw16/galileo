@@ -11,19 +11,25 @@
     <title>So you think you can do science when you're broke</title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/init.js"></script>
   </head>
 
   <body>
     <br />
     <div class="row">
       <center>
-        <img src="img/th.jpeg" width="500px"></img>
+        <img src="img/th.jpeg" width="40%"></img>
       </center>
+    </div>
+    <div class="row">
+      <div class="col s4"><center>Papers published: 0</center></div>
+      <div class="col s4"><center>Money: $100.00</center></div>
+      <div class="col s4"><center>Restedness: 30%</center></div>
     </div>
     <div class="row">
       <div class = "range-field col s6">
         <label for="science_hours">Hours sciencing</label>
-        <input id="science_hours" type="range" class="validate" min="0" max="24">
+        <input id="science_hours" type="range" class="validate" value="0" min="0" max="24">
       </div>
       <div class = "input-field col s6">
         <input id="science_money" type="text" class="validate">
@@ -31,7 +37,14 @@
       </div>
     </div>
     <div class = "row">
-      <div class="col s6"></div>
+      <div class="input-field col s6">
+        <select id="eating_hours">
+          <option value="" disabled>Eat where?</option>
+          <option value="1" selected>Bruce (1 hr)</option>
+          <option value="2">Kerr/Maple (2 hr)</option>
+          <option value="3">Victory (3 hr)</option>
+        </select>
+      </div>
       <div class = "input-field col s6">
         <input id="eating_money" type="text" class="validate">
         <label for="eating_money">Dollars eating</label>
@@ -40,7 +53,7 @@
     <div class = "row">
       <div class="range-field col s6">
         <label for="entertaiment_money">Hours entertainment</label>
-        <input id="entertainment_money" type="range" class="validate" min="0" max="24">
+        <input id="entertainment_money" type="range" class="validate" value="0" min="0" max="24">
       </div>
       <div class = "input-field col s6">
         <input id="entertainment_money" type="text" class="validate">
