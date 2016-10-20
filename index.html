@@ -14,7 +14,7 @@
     <script type="text/javascript" src="js/init.js"></script>
   </head>
 
-  <body onload="javascript:init()">
+  <body>
     <br />
     <div class="row">
       <center>
@@ -40,8 +40,8 @@
     <div class = "row">
       <div class="input-field col s6">
         <select id="eating_hours">
-          <option value="" disabled>Eat where?</option>
-          <option value="1" selected>Bruce (1 hr)</option>
+          <option value="0" disabled>Eat where?</option>
+          <option value="1">Bruce (1 hr)</option>
           <option value="2">Kerr/Maple (2 hr)</option>
           <option value="3">Victory (3 hr)</option>
         </select>
@@ -53,8 +53,9 @@
     </div>
     <div class = "row">
       <div class="range-field col s6">
-        <label for="entertaiment_hours">Hours entertainment</label>
+        <label for="entertainment_hours">Hours entertainment</label>
         <input id="entertainment_hours" type="range" class="validate" value="0" min="0" max="24">
+        <center><span id="entertainment_hours_label">0</span> hr</center>
       </div>
       <div class = "input-field col s6">
         <input id="entertainment_money" type="text" class="validate">
@@ -63,12 +64,16 @@
     </div>
     <div class = "row">
       <div class = "input-field col s6">
-        <label for="decision_hours">Hours deciding</label>
+        <label for="decision_hours">Hours deciding: <span id="decision_hours_label">0</span> hr</label>
         <div class="progress">
           <div id = "decision_hours" class="determinate" style="width: 0%"></div>
         </div>
       </div>
-
+    </div>
+    <div class = "row">
+      <div class = "input-field col s6">
+        Hours sleeping: <span class="sleep_hours">0</span> hr
+      </div>
     </div>
   </body>
 </html>
