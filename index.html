@@ -15,6 +15,16 @@
   </head>
 
   <body>
+    <div id="modal1" class="modal">
+      <div class="modal-content">
+        <h4>Modal Header</h4>
+        <p>A bunch of text</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+      </div>
+    </div>
+
     <br />
     <div class="row">
       <center>
@@ -22,9 +32,10 @@
       </center>
     </div>
     <div class="row">
-      <div class="col s4"><center>Papers published: 0</center></div>
-      <div class="col s4"><center>Money: $100.00</center></div>
-      <div class="col s4"><center>Restedness: 30%</center></div>
+      <div class="col s3"><center>Papers published: 0</center></div>
+      <div class="col s3"><center>Money: $100.00</center></div>
+      <div class="col s3"><center>Health: 30%</center></div>
+      <div class="col s3"><center>Energy: 30%</center></div>
     </div>
     <div class="row">
       <div class = "range-field col s6">
@@ -40,7 +51,8 @@
     <div class = "row">
       <div class="input-field col s6">
         <select id="eating_hours">
-          <option value="0" disabled>Eat where?</option>
+          <option value="-1" disabled>Eat where?</option>
+          <option value="0">Skip meals (0 hr)</option>
           <option value="1">Bruce (1 hr)</option>
           <option value="2">Kerr/Maple (2 hr)</option>
           <option value="3">Victory (3 hr)</option>
@@ -71,8 +83,8 @@
       </div>
     </div>
     <div class = "row">
-      <div class = "input-field col s6">
-        Hours sleeping: <span class="sleep_hours">0</span> hr
+      <div class = "col s6">
+        Hours sleeping: <span id="sleep_hours_label">0</span> hr
       </div>
     </div>
   </body>
