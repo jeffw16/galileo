@@ -13,7 +13,7 @@ function init(){
 
   setInterval(function(){
     decisiontime++;
-    $("#decision_hours").css("width", decisiontime/60*100+"%");
+    $("#decision_hours").css("width", decisiontime/30*100+"%");
     if(decisiontime >= 30){
       decisiontime = 0;
     }
