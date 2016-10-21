@@ -172,9 +172,9 @@ function init(){
 
   setInterval(function(){
     decisionmins++;
-    $("#decision_hours").css("width", decisionmins/10*100+"%");
-    if(decisionmins >= 10 && sleepHours != 0){
-      decisionmins -= 10;
+    $("#decision_hours").css("width", decisionmins/30*100+"%");
+    if(decisionmins >= 30 && sleepHours != 0){
+      decisionmins -= 30;
       decisionHours++;
       $("#decision_hours_label").html(decisionHours);
       adjustTimeMaxes();
