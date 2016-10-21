@@ -17,11 +17,11 @@
   <body>
     <div id="modal1" class="modal">
       <div class="modal-content">
-        <h4>Modal Header</h4>
-        <p>A bunch of text</p>
+        <h4 id="popup-title">Modal Header</h4>
+        <p id="popup-content">A bunch of text</p>
       </div>
       <div class="modal-footer">
-        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+        <a href="#!" onclick="javascript:reset()" class=" modal-action modal-close waves-effect waves-green btn-flat">OK</a>
       </div>
     </div>
 
@@ -33,10 +33,13 @@
         </center>
       </div>
       <div class="row">
-        <div class="col s3"><center>Papers published: 0</center></div>
-        <div class="col s3"><center>Money: $100.00</center></div>
-        <div class="col s3"><center>Health: 30%</center></div>
-        <div class="col s3"><center>Energy: 30%</center></div>
+        <div class="col s12"><center>Day: <span id="day_label">1</span></center></div>
+      </div>
+      <div class="row">
+        <div class="col s3"><center>Papers published: <span id="papers_label">0</span></center></div>
+        <div class="col s3"><center>Paper quality: <span id="quality_label">50</span>%</center></div>
+        <div class="col s3"><center>Money: $<span id="balance_label">100</span></center></div>
+        <div class="col s3"><center>Health: <span id="health_label">100</span>%</center></div>
       </div>
       <div class="row">
         <div class = "range-field col s6">
@@ -46,8 +49,8 @@
         </div>
         <div class = "range-field col s6">
           <label for="science_money">Dollars sciencing</label>
-          <input id="science_money" type="range" class="validate" value="0" min="0" max="100">
-          <center>$<span id="science_money_label">0</span> (max $<span id="science_money_max_label">100</span>)</center>
+          <input id="science_money" type="range" class="validate" value="0" min="0" max="60">
+          <center>$<span id="science_money_label">0</span> (max $<span id="science_money_max_label">60</span>)</center>
         </div>
       </div>
       <div class = "row">
@@ -61,25 +64,24 @@
           </select>
         </div>
         <div class = "range-field col s6">
-          <label for="eating_money">Dollars eating @ Union</label>
-          <input id="eating_money" type="range" class="validate" value="0" min="0" max="100">
-          <center>$<span id="eating_money_label">0</span> (max $<span id="eating_money_max_label">100</span>)</center>
+          <label for="eating_money">Dollars snacks</label>
+          <input id="eating_money" type="range" class="validate" value="0" min="0" max="60">
+          <center>$<span id="eating_money_label">0</span> (max $<span id="eating_money_max_label">60</span>)</center>
         </div>
       </div>
       <div class = "row">
         <div class="range-field col s6">
-          <label for="entertainment_hours">Hours entertainment</label>
-          <input id="entertainment_hours" type="range" class="validate" value="0" min="0" max="24">
-          <center><span id="entertainment_hours_label">0</span> hr (max <span id="entertainment_hours_max_label">24</span> hr)</center>
+          <label for="working_hours">Hours working</label>
+          <input id="working_hours" type="range" class="validate" value="0" min="0" max="24">
+          <center><span id="working_hours_label">0</span> hr (max <span id="working_hours_max_label">24</span> hr)</center>
         </div>
-        <div class = "range-field col s6">
-          <label for="entertainment_money">Dollars entertainment</label>
-          <input id="entertainment_money" type="range" class="validate" value="0" min="0" max="100">
-          <center>$<span id="entertainment_money_label">0</span> (max $<span id="entertainment_money_max_label">100</span>)</center>
+        <div class="center-align col s6">
+          <br>
+          Rent: $40
         </div>
       </div>
       <div class = "row">
-        <div class = "input-field col s6">
+        <div class = "input-field col s6 center-align">
           <label for="decision_hours">Hours deciding: <span id="decision_hours_label">0</span> hr</label>
           <div class="progress">
             <div id = "decision_hours" class="determinate" style="width: 0%"></div>
@@ -90,7 +92,7 @@
         <div class = "col s6 center-align">
           <br>
           <br>
-          <button class="btn waves-effect red-lighten-2 waves-light">done</button>
+          <button id="done_button" class="btn waves-effect red-lighten-2 waves-light">done</button>
         </div>
       </div>
     </div>

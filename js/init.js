@@ -1,6 +1,5 @@
 $(document).ready(function() {
   $('select').material_select();
-  $("#modal1").openModal();
   sleepHours = 24;
   $("#sleep_hours_label").html(24);
   init();
@@ -10,15 +9,20 @@ decisionmins = 0;
 
 scienceHours = 0;
 eatingHours = 0;
-entertainmentHours = 0;
+workingHours = 0;
 decisionHours = 0;
 sleepHours = 0;
 
 scienceMoney = 0;
 eatingMoney = 0;
-entertainmentMoney = 0;
+rent = 40;
 
+dayNum = 1;
+
+papers = 0;
 balance = 100;
+health = 100;
+quality = 50;
 
 function setEatingHours(val){
   $("#eating_hours").val(val);
@@ -37,65 +41,140 @@ function setEatingHoursMax(val){
 }
 
 function adjustTimeMaxes(){
-  $("#science_hours").prop("max",24-eatingHours-entertainmentHours-decisionHours);
-  $("#science_hours_max_label").html(24-eatingHours-entertainmentHours-decisionHours);
-  $("#entertainment_hours").prop("max",24-eatingHours-scienceHours-decisionHours);
-  $("#entertainment_hours_max_label").html(24-eatingHours-scienceHours-decisionHours);
-  setEatingHoursMax(24-entertainmentHours-scienceHours-decisionHours);
-  sleepHours = 24-eatingHours-entertainmentHours-decisionHours-scienceHours;
+  $("#science_hours").prop("max",24-eatingHours-workingHours-decisionHours);
+  $("#science_hours_max_label").html(24-eatingHours-workingHours-decisionHours);
+  $("#working_hours").prop("max",24-eatingHours-scienceHours-decisionHours);
+  $("#working_hours_max_label").html(24-eatingHours-scienceHours-decisionHours);
+  setEatingHoursMax(24-workingHours-scienceHours-decisionHours);
+  sleepHours = 24-eatingHours-workingHours-decisionHours-scienceHours;
   $("#sleep_hours_label").html(sleepHours);
 }
 
 function adjustMoneyMaxes(){
-  $("#science_money").prop("max",balance-eatingMoney-entertainmentMoney);
-  $("#science_money_max_label").html(balance-eatingMoney-entertainmentMoney);
-  $("#eating_money").prop("max",balance-scienceMoney-entertainmentMoney);
-  $("#eating_money_max_label").html(balance-scienceMoney-entertainmentMoney);
-  $("#entertainment_money").prop("max",balance-scienceMoney-eatingMoney);
-  $("#entertainment_money_max_label").html(balance-scienceMoney-eatingMoney);
+  $("#science_money").prop("max",balance-eatingMoney-rent);
+  $("#science_money_max_label").html(balance-eatingMoney-rent);
+  $("#eating_money").prop("max",balance-scienceMoney-rent);
+  $("#eating_money_max_label").html(balance-scienceMoney-rent);
+}
+
+function updateMetrics(){
+  $("#papers_label").html(papers);
+  $("#balance_label").html(balance);
+  $("#health_label").html(health);
+  $("#quality_label").html(quality);
+}
+
+function reset(){
+  decisionmins = 0;
+
+  scienceHours = 0;
+  $("#science_hours").val(0);
+  $("#science_hours_label").html($("#science_hours").val());
+  eatingHours = 0;
+  $("#eating_hours").val(0);
+  $("#eating_hours_label").html($("#eating_hours").val());
+  workingHours = 0;
+  $("#working_hours").val(0);
+  $("#working_hours_label").html($("#working_hours").val());
+  decisionHours = 0;
+
+  sleepHours = 24;
+  $("#sleep_hours_label").html(24);
+
+  scienceMoney = 0;
+  $("#science_money").val(0);
+  $("#science_money_label").html($("#science_money").val());
+  eatingMoney = 0;
+  $("#eating_money").val(0);
+  $("#eating_money_label").html($("#eating_money").val());
+  adjustMoneyMaxes();
+  adjustTimeMaxes();
+
+}
+
+function processDay(){
+  $("#popup-title").html("Day "+dayNum);
+
+  var blurb;
+
+  var deltaPapers = scienceHours/50 + scienceMoney/500;
+  var deltaMoneyDueToSpending = deltaPapers*100 - scienceMoney - eatingMoney - rent;
+  var deltaMoneyDueToWorking = workingHours*8;
+  var deltaHealthDueToSleep = (sleepHours > 8? (sleepHours-8)*5: (sleepHours-8)*15);
+  var deltaHealthDueToEating = (eatingHours+eatingMoney/5 > 3? ((eatingHours+(eatingMoney/10)-3)*10): ((eatingHours+(eatingMoney/5)-3)*20));
+  var deltaQuality=(health-70)/5 + (scienceMoney-20)/20;
+  if(sleepHours > 10){
+    deltaHealthDueToSleep = 10;
+  }
+
+  blurb = "You spent " + scienceHours + " hr and $"+scienceMoney+" sciencing. ";
+  blurb+= "<br>You have created "+deltaPapers+" papers.";
+
+  blurb+="<br><br>You spent " + eatingHours + " hr and $" + eatingMoney + " eating.";
+  blurb+="<br>You have "+(deltaHealthDueToEating>0?"gained":"lost")+" "+Math.abs(deltaHealthDueToEating)+"% health because of this.";
+
+  blurb+="<br><br>You spent " + workingHours + " hr working.";
+  blurb+="<br>You have earned $"+deltaMoneyDueToWorking+".";
+
+  blurb+="<br><br>You spent " + sleepHours + " hr sleeping.";
+  blurb+="<br>You have "+(deltaHealthDueToSleep>0?"gained":"lost")+" "+Math.abs(deltaHealthDueToSleep)+"% health because of this.";
+
+  blurb+="<br><br>You spent $"+ scienceMoney+" on science, $"+eatingMoney+" on food, and $"+rent+" on rent.";
+  blurb+="<br>You spent $"+(scienceMoney+eatingMoney+rent)+" in total.";
+
+  balance+=deltaMoneyDueToSpending+deltaMoneyDueToWorking;
+  health+=deltaHealthDueToSleep+deltaHealthDueToEating;
+  papers+=deltaPapers;
+  quality+=deltaQuality;
+  decisionHours = 0;
+  decisionmins = 0;
+
+  $("#popup-content").html(blurb);
+  dayNum++;
+  $("#day_label").html(dayNum);
+  $("#modal1").openModal();
+  updateMetrics();
 }
 
 function init(){
   $("#science_hours").change(function(){
-    scienceHours = $("#science_hours").val();
+    scienceHours = parseInt($("#science_hours").val());
     $("#science_hours_label").html($("#science_hours").val());
     adjustTimeMaxes();
   });
 
-  $("#entertainment_hours").change(function(){
-    entertainmentHours = $("#entertainment_hours").val();
-    $("#entertainment_hours_label").html($("#entertainment_hours").val());
+  $("#working_hours").change(function(){
+    workingHours = parseInt($("#working_hours").val());
+    $("#working_hours_label").html($("#working_hours").val());
     adjustTimeMaxes();
   });
 
   $("#eating_hours").change(function(){
-    eatingHours = $("#eating_hours").val();
+    eatingHours = parseInt($("#eating_hours").val());
     adjustTimeMaxes();
   });
 
   $("#science_money").change(function(){
-    scienceMoney = $("#science_money").val();
+    scienceMoney = parseInt($("#science_money").val());
     $("#science_money_label").html($("#science_money").val());
     adjustMoneyMaxes();
   });
 
   $("#eating_money").change(function(){
-    eatingMoney = $("#eating_money").val();
+    eatingMoney = parseInt($("#eating_money").val());
     $("#eating_money_label").html($("#eating_money").val());
     adjustMoneyMaxes();
   });
 
-  $("#entertainment_money").change(function(){
-    entertainmentMoney = $("#entertainment_money").val();
-    $("#entertainment_money_label").html($("#entertainment_money").val());
-    adjustMoneyMaxes();
+  $("#done_button").click(function(){
+    processDay();
   });
 
   setInterval(function(){
     decisionmins++;
-    $("#decision_hours").css("width", decisionmins/30*100+"%");
-    if(decisionmins >= 30 && sleepHours != 0){
-      decisionmins -= 30;
+    $("#decision_hours").css("width", decisionmins/10*100+"%");
+    if(decisionmins >= 10 && sleepHours != 0){
+      decisionmins -= 10;
       decisionHours++;
       $("#decision_hours_label").html(decisionHours);
       adjustTimeMaxes();
