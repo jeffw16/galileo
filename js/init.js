@@ -1,10 +1,3 @@
-$(document).ready(function() {
-  $('select').material_select();
-  sleepHours = 24;
-  $("#sleep_hours_label").html(24);
-  init();
-});
-
 decisionmins = 0;
 
 scienceHours = 0;
@@ -22,7 +15,19 @@ dayNum = 1;
 papers = 0;
 balance = 100;
 health = 100;
-quality = 50;
+reputation = 50;
+
+metrics_content="";
+
+$(document).ready(function() {
+  $('select').material_select();
+  sleepHours = 24;
+  $("#sleep_hours_label").html(24);
+  updateMetrics();
+  init();
+});
+
+var currentEncounter;
 
 function setEatingHours(val){
   $("#eating_hours").val(val);
@@ -58,13 +63,11 @@ function adjustMoneyMaxes(){
 }
 
 function updateMetrics(){
-  $("#papers_label").html(papers);
-  $("#balance_label").html(balance);
-  $("#health_label").html(health);
-  $("#quality_label").html(quality);
+  var metrics_content = "<div class=\"col s3\"><center>Papers published: "+papers+"</center></div><div class=\"col s3\"><center>Reputation: "+reputation+"%</center></div><div class=\"col s3\"><center>Money: $"+balance+"</center></div><div class=\"col s3\"><center>Health: "+health+"%</center></div>";
+  $(".metrics-row").html(metrics_content);
 }
 
-function reset(){
+function resetInput(){
   decisionmins = 0;
 
   scienceHours = 0;
@@ -92,17 +95,76 @@ function reset(){
 
 }
 
+var encounters = [
+  {
+    title: "Plagiarize",
+    content: "You're in need of some cash! You obtained a design for a new optical instrument from Holland. Even if the people find out, which they probably won't, the Hollands won't be able to claim ownership of the design, since it doesn't seem to be patented.<br><br>You paint your device a different color just to be safe though.",
+    effect: "+1 papers published, -20% reputation, +$100 money,",
+    refusalEffect: "Nothing",
+    apply: function(){
+      papers++;
+      reputation-=20;
+      balance+=100;
+    }
+  },
+
+  {
+    title: "Plagiarize",
+    content: "You're in need of some cash! You obtained a design for a new optical instrument from Holland. Even if the people find out (they probably won't) the Hollands won't be able to claim ownership of the design, since it doesn't seem to be patented.<br><br>You paint your device a different color just to be safe though.",
+    effect: "+1 papers published, -20% reputation, +$100 money",
+    refusalEffect: "Nothing",
+    apply: function(){
+      papers++;
+      reputation-=20;
+      balance+=100;
+    },
+    refuse: function(){
+      //do nothing
+    }
+  }
+
+]
+
+function applyEncounter(){
+  currentEncounter.apply();
+  resetInput();
+  updateMetrics();
+}
+
+function refuseEncounter(){
+  currentEncounter.refuse();
+  resetInput();
+  updateMetrics();
+}
+
+function encounter(){
+  currentEncounter = encounters[Math.floor(Math.random()*encounters.length)];
+  $("#encounter-title").html(currentEncounter.title);
+
+  $("#encounter-content").html(currentEncounter.content+"<br><br>Effect: "+currentEncounter.effect+"<br><br>Effect of Refusal: "+currentEncounter.refusalEffect);
+  $("#encounter-popup").openModal();
+}
+
+function closePopup(){
+  resetInput();
+  encounter();
+}
+
+function roundNum(num, places){
+  return Math.round(num*Math.pow(10,places))/Math.pow(10,places);
+}
+
 function processDay(){
   $("#popup-title").html("Day "+dayNum);
 
   var blurb;
 
-  var deltaPapers = scienceHours/50 + scienceMoney/500;
-  var deltaMoneyDueToSpending = deltaPapers*100 - scienceMoney - eatingMoney - rent;
-  var deltaMoneyDueToWorking = workingHours*8;
-  var deltaHealthDueToSleep = (sleepHours > 8? (sleepHours-8)*5: (sleepHours-8)*15);
-  var deltaHealthDueToEating = (eatingHours+eatingMoney/5 > 3? ((eatingHours+(eatingMoney/10)-3)*10): ((eatingHours+(eatingMoney/5)-3)*20));
-  var deltaQuality=(health-70)/5 + (scienceMoney-20)/20;
+  var deltaPapers = roundNum(scienceHours/50 + scienceMoney/500,2);
+  var deltaMoneyDueToSpending = roundNum(deltaPapers*100 - scienceMoney - eatingMoney - rent,2);
+  var deltaMoneyDueToWorking = roundNum(workingHours*8,2);
+  var deltaHealthDueToSleep = roundNum((sleepHours > 8? (sleepHours-8)*5: (sleepHours-8)*15),2);
+  var deltaHealthDueToEating = roundNum(eatingHours+eatingMoney/5 > 4? ((eatingHours+(eatingMoney/10)-4)*10): ((eatingHours+(eatingMoney/5)-4)*20),2);
+  var deltaReputation=roundNum((health-70)/5 + (scienceMoney-20)/20,2);
   if(sleepHours > 10){
     deltaHealthDueToSleep = 10;
   }
@@ -110,29 +172,34 @@ function processDay(){
   blurb = "You spent " + scienceHours + " hr and $"+scienceMoney+" sciencing. ";
   blurb+= "<br>You have created "+deltaPapers+" papers.";
 
+  blurb+="<br><br>You spent $" + scienceMoney + " on your paper and conducted research with "+health+"% health.";
+  blurb+="<br>You have "+(deltaReputation>0?"gained":"lost")+ " "+Math.abs(deltaReputation)+"% reputation because of this."
+
   blurb+="<br><br>You spent " + eatingHours + " hr and $" + eatingMoney + " eating.";
   blurb+="<br>You have "+(deltaHealthDueToEating>0?"gained":"lost")+" "+Math.abs(deltaHealthDueToEating)+"% health because of this.";
-
-  blurb+="<br><br>You spent " + workingHours + " hr working.";
-  blurb+="<br>You have earned $"+deltaMoneyDueToWorking+".";
 
   blurb+="<br><br>You spent " + sleepHours + " hr sleeping.";
   blurb+="<br>You have "+(deltaHealthDueToSleep>0?"gained":"lost")+" "+Math.abs(deltaHealthDueToSleep)+"% health because of this.";
 
+  blurb+="<br><br>You spent " + workingHours + " hr working.";
+  blurb+="<br>You have earned $"+deltaMoneyDueToWorking+".";
+
   blurb+="<br><br>You spent $"+ scienceMoney+" on science, $"+eatingMoney+" on food, and $"+rent+" on rent.";
   blurb+="<br>You spent $"+(scienceMoney+eatingMoney+rent)+" in total.";
+
+  $(".delta-row").html("<div class=\"col s3\"><center>"+(deltaPapers)+"</center></div><div class=\"col s3\"><center>"+(deltaReputation)+"</center></div><div class=\"col s3\"><center>"+(deltaMoneyDueToWorking+deltaMoneyDueToSpending)+"</center></div><div class=\"col s3\"><center>"+(deltaHealthDueToSleep+deltaHealthDueToEating)+"</center></div>");
 
   balance+=deltaMoneyDueToSpending+deltaMoneyDueToWorking;
   health+=deltaHealthDueToSleep+deltaHealthDueToEating;
   papers+=deltaPapers;
-  quality+=deltaQuality;
+  reputation+=deltaReputation;
   decisionHours = 0;
   decisionmins = 0;
 
   $("#popup-content").html(blurb);
   dayNum++;
   $("#day_label").html(dayNum);
-  $("#modal1").openModal();
+  $("#popup").openModal();
   updateMetrics();
 }
 

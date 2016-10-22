@@ -15,13 +15,27 @@
   </head>
 
   <body>
-    <div id="modal1" class="modal">
+    <div id="popup" class="modal modal-fixed-footer">
       <div class="modal-content">
         <h4 id="popup-title">Modal Header</h4>
+        <div class="row metrics-row"></div>
+        <div class="row delta-row"></div>
         <p id="popup-content">A bunch of text</p>
       </div>
       <div class="modal-footer">
-        <a href="#!" onclick="javascript:reset()" class=" modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+        <a href="#!" onclick="javascript:closePopup()" class=" modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+      </div>
+    </div>
+
+    <div id="encounter-popup" class="modal modal-fixed-footer">
+      <div class="modal-content">
+        <h4 id="encounter-title">Modal Header</h4>
+        <div class="row metrics-row"></div>
+        <p id="encounter-content">A bunch of text</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" onclick="javascript:applyEncounter()" class=" modal-action modal-close waves-effect waves-green btn-flat">YES</a>
+        <a href="#!" onclick="javascript:refuseEncounter()" class=" modal-action modal-close waves-effect waves-green btn-flat">NO</a>
       </div>
     </div>
 
@@ -35,12 +49,7 @@
       <div class="row">
         <div class="col s12"><center>Day: <span id="day_label">1</span></center></div>
       </div>
-      <div class="row">
-        <div class="col s3"><center>Papers published: <span id="papers_label">0</span></center></div>
-        <div class="col s3"><center>Paper quality: <span id="quality_label">50</span>%</center></div>
-        <div class="col s3"><center>Money: $<span id="balance_label">100</span></center></div>
-        <div class="col s3"><center>Health: <span id="health_label">100</span>%</center></div>
-      </div>
+      <div class="row metrics-row"></div>
       <div class="row">
         <div class = "range-field col s6">
           <label for="science_hours">Hours sciencing</label>
