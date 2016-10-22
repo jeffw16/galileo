@@ -98,8 +98,8 @@ function resetInput(){
 var encounters = [
   {
     title: "Plagiarize",
-    content: "You're in need of some cash! You obtained a design for a new optical instrument from Holland. Even if the people find out, which they probably won't, the Hollands won't be able to claim ownership of the design, since it doesn't seem to be patented.<br><br>You paint your device a different color just to be safe though.",
-    effect: "+1 papers published, -20% reputation, +$100 money,",
+    content: "You're in need of some cash! You obtained a design for a new optical instrument from Holland. Even if the people find out, which they probably won't, the Hollands won't be able to claim ownership of the design, since it doesn't seem to be patented.<br><br>You'll paint your device red just to be safe though.",
+    effect: "+1 papers published, -5% reputation, +$100 money,",
     refusalEffect: "Nothing",
     apply: function(){
       papers++;
@@ -107,38 +107,46 @@ var encounters = [
       balance+=100;
     }
   },
-
   {
-    title: "Plagiarize",
-    content: "You're in need of some cash! You obtained a design for a new optical instrument from Holland. Even if the people find out (they probably won't) the Hollands won't be able to claim ownership of the design, since it doesn't seem to be patented.<br><br>You paint your device a different color just to be safe though.",
-    effect: "+1 papers published, -20% reputation, +$100 money",
-    refusalEffect: "Nothing",
+    title: "Language",
+    content: "Through careful observation through your telescope, you found that Copernicus's heliocentric model of the solar system is, in fact, consistent with your data. You know that you'll be prosecuted for publishing these results, but you hope that your radical ideas will spread quickly among the people. Thus, you contemplate whether to write your paper in common language or in academic latin, which is more common for scientific papers. Would you like to write your paper in plain language?",
+    effect: "+$150 money (your papers sell well in the streets), +50% reputation (street cred)",
+    refusalEffect: "+10% reputation (university faculty appreciate Latin more)",
     apply: function(){
-      papers++;
-      reputation-=20;
-      balance+=100;
+      reputation+=50;
+      balance+=150;
     },
     refuse: function(){
-      //do nothing
+      reputation+=10;
     }
   }
-
-]
+];
 
 function applyEncounter(){
   currentEncounter.apply();
+  balance=roundNum(balance,2);
+  health=roundNum(health,2);
+  papers=roundNum(papers,2);
+  reputation=roundNum(reputation,2);
   resetInput();
   updateMetrics();
 }
 
 function refuseEncounter(){
   currentEncounter.refuse();
+  balance=roundNum(balance,2);
+  health=roundNum(health,2);
+  papers=roundNum(papers,2);
+  reputation=roundNum(reputation,2);
   resetInput();
   updateMetrics();
 }
 
+var currentEncounterNum = 0;
+
 function encounter(){
-  currentEncounter = encounters[Math.floor(Math.random()*encounters.length)];
+  currentEncounter = encounters[currentEncounterNum];
+  currentEncounterNum++;
   $("#encounter-title").html(currentEncounter.title);
 
   $("#encounter-content").html(currentEncounter.content+"<br><br>Effect: "+currentEncounter.effect+"<br><br>Effect of Refusal: "+currentEncounter.refusalEffect);
@@ -187,12 +195,17 @@ function processDay(){
   blurb+="<br><br>You spent $"+ scienceMoney+" on science, $"+eatingMoney+" on food, and $"+rent+" on rent.";
   blurb+="<br>You spent $"+(scienceMoney+eatingMoney+rent)+" in total.";
 
-  $(".delta-row").html("<div class=\"col s3\"><center>"+(deltaPapers)+"</center></div><div class=\"col s3\"><center>"+(deltaReputation)+"</center></div><div class=\"col s3\"><center>"+(deltaMoneyDueToWorking+deltaMoneyDueToSpending)+"</center></div><div class=\"col s3\"><center>"+(deltaHealthDueToSleep+deltaHealthDueToEating)+"</center></div>");
+  $(".delta-row").html("<div class=\"col s3\"><center>"+(deltaPapers>0?"+":"")+(deltaPapers)+"</center></div><div class=\"col s3\"><center>"+(deltaReputation>0?"+":"")+(deltaReputation)+"</center></div><div class=\"col s3\"><center>"+(deltaMoneyDueToWorking+deltaMoneyDueToSpending>0?"+":"")+(deltaMoneyDueToWorking+deltaMoneyDueToSpending)+"</center></div><div class=\"col s3\"><center>"+(deltaHealthDueToSleep+deltaHealthDueToEating>0?"+":"")+(deltaHealthDueToSleep+deltaHealthDueToEating)+"</center></div>");
 
   balance+=deltaMoneyDueToSpending+deltaMoneyDueToWorking;
   health+=deltaHealthDueToSleep+deltaHealthDueToEating;
   papers+=deltaPapers;
   reputation+=deltaReputation;
+
+  balance=roundNum(balance,2);
+  health=roundNum(health,2);
+  papers=roundNum(papers,2);
+  reputation=roundNum(reputation,2);
   decisionHours = 0;
   decisionmins = 0;
 
