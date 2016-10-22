@@ -98,42 +98,70 @@ function resetInput(){
 var encounters = [
   {
     title: "Plagiarize",
-    content: "You're in need of some cash! You obtained a design for a new optical instrument from Holland. Even if the people find out, which they probably won't, the Hollands won't be able to claim ownership of the design, since it doesn't seem to be patented.<br><br>You'll paint your device red just to be safe though.",
-    effect: "+1 papers published, -5% reputation, +$100 money,",
+    content: "You're in need of some cash! You obtained a design for a new optical instrument from Holland. Even if the people find out, which they probably won't, the Dutch won't be able to claim ownership of the design, since it doesn't seem to be patented.<br><br>You'll paint your device red just to be safe though.",
+    effect: "+$100 money",
     refusalEffect: "Nothing",
     apply: function(){
       papers++;
       reputation-=20;
       balance+=100;
+      return "Oops, you got caught. You lost 10% reputation as a result. However, you already earned a ton of money, so you don't really care.";
+    },
+    refuse: function(){
+      return "Smart choice. You don't want to be risking your reputation for something small like this.";
     }
   },
   {
     title: "Language",
     content: "Through careful observation through your telescope, you found that Copernicus's heliocentric model of the solar system is, in fact, consistent with your data. You know that you'll be prosecuted for publishing these results, but you hope that your radical ideas will spread quickly among the people. Thus, you contemplate whether to write your paper in common language or in academic latin, which is more common for scientific papers. Would you like to write your paper in plain language?",
-    effect: "+$150 money (your papers sell well in the streets), +50% reputation (street cred)",
-    refusalEffect: "+10% reputation (university faculty appreciate Latin more)",
+    effect: "Unknown",
+    refusalEffect: "Unknown",
     apply: function(){
       reputation+=50;
       balance+=150;
+      return "Congratulations! You paper sells well in the street, and you get $150 money and 50% reputation. Watch out for the authorities though. ";
     },
     refuse: function(){
       reputation+=10;
+      return "Oops. One of your students gets the manuscript and translates it into vernacular language without your consent in order to sell it. You get nothing."
+    }
+  },
+  {
+    title: "Language",
+    content: "Through careful observation through your telescope, you found that Copernicus's heliocentric model of the solar system is, in fact, consistent with your data. You know that you'll be prosecuted for publishing these results, but you hope that your radical ideas will spread quickly among the people. Thus, you contemplate whether to write your paper in common language or in academic latin, which is more common for scientific papers. Would you like to write your paper in plain language?",
+    effect: "Unknown",
+    refusalEffect: "Unknown",
+    apply: function(){
+      reputation+=50;
+      balance+=150;
+      return "Congratulations! You paper sells well in the street, and you get $150 money and 50% reputation. Watch out for the authorities though. ";
+    },
+    refuse: function(){
+      reputation+=10;
+      return "Oops. One of your students gets the manuscript and translates it into vernacular language without your consent in order to sell it. You get nothing.";
     }
   }
 ];
 
 function applyEncounter(){
-  currentEncounter.apply();
+  $("#encounter-result-title").html("Accepted");
+  $("#encounter-result-content").html(currentEncounter.apply());
+  $("#encounter-result-popup").openModal();
   balance=roundNum(balance,2);
   health=roundNum(health,2);
   papers=roundNum(papers,2);
   reputation=roundNum(reputation,2);
   resetInput();
   updateMetrics();
+  $("#encounter-result-title").html("Accepted");
+  $("#encounter-result-content").html(currentEncounter.getApplyResult());
+  $("#encounter-result-popup").openModal();
 }
 
 function refuseEncounter(){
-  currentEncounter.refuse();
+  $("#encounter-result-title").html("Refused");
+  $("#encounter-result-content").html(currentEncounter.refuse());
+  $("#encounter-result-popup").openModal();
   balance=roundNum(balance,2);
   health=roundNum(health,2);
   papers=roundNum(papers,2);
@@ -145,7 +173,11 @@ function refuseEncounter(){
 var currentEncounterNum = 0;
 
 function encounter(){
-  currentEncounter = encounters[currentEncounterNum];
+  if(currentEncounterNum >= encounters.length){
+    currentEncounter = encounters[encounters.length-1];
+  }else{
+    currentEncounter = encounters[currentEncounterNum];
+  }
   currentEncounterNum++;
   $("#encounter-title").html(currentEncounter.title);
 
