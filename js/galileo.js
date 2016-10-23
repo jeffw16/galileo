@@ -63,7 +63,7 @@ function adjustMoneyMaxes(){
 }
 
 function updateMetrics(){
-  var metrics_content = "<div class=\"col s6 l3\"><center>Papers: "+papers+"</center></div><div class=\"col s6 l3\"><center>Reputation: "+reputation+"%</center></div><div class=\"col s6 l3\"><center>Money: $"+balance+"</center></div><div class=\"col s6 l3\"><center>Health: "+health+"%</center></div>";
+  var metrics_content = "<div class=\"col s6 m6 l3\"><center>Papers: "+papers+"</center></div><div class=\"col s6 m6 l3\"><center>Reputation: "+reputation+"%</center></div><div class=\"col s6 m6 l3\"><center>Money: $"+balance+"</center></div><div class=\"col s6 m6 l3\"><center>Health: "+health+"%</center></div>";
   $(".metrics-row").html(metrics_content);
 }
 
