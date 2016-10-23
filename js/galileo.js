@@ -227,7 +227,7 @@ function processDay(){
   blurb+="<br><br>You spent $"+ scienceMoney+" on science, $"+eatingMoney+" on food, and $"+rent+" on rent.";
   blurb+="<br>You spent $"+(scienceMoney+eatingMoney+rent)+" in total.";
 
-  $(".delta-row").html("<div class=\"col s3\"><center>"+(deltaPapers>0?"+":"")+(deltaPapers)+"</center></div><div class=\"col s3\"><center>"+(deltaReputation>0?"+":"")+(deltaReputation)+"</center></div><div class=\"col s3\"><center>"+(deltaMoneyDueToWorking+deltaMoneyDueToSpending>0?"+":"")+(deltaMoneyDueToWorking+deltaMoneyDueToSpending)+"</center></div><div class=\"col s3\"><center>"+(deltaHealthDueToSleep+deltaHealthDueToEating>0?"+":"")+(deltaHealthDueToSleep+deltaHealthDueToEating)+"</center></div>");
+  $(".delta-row").html("<div class=\"col s6 m6 l3\"><center>"+(deltaPapers>0?"+":"")+(deltaPapers)+"</center></div><div class=\"col s6 m6 l3\"><center>"+(deltaReputation>0?"+":"")+(deltaReputation)+"</center></div><div class=\"col s6 m6 l3\"><center>"+(deltaMoneyDueToWorking+deltaMoneyDueToSpending>0?"+":"")+(deltaMoneyDueToWorking+deltaMoneyDueToSpending)+"</center></div><div class=\"col s6 m6 l3\"><center>"+(deltaHealthDueToSleep+deltaHealthDueToEating>0?"+":"")+(deltaHealthDueToSleep+deltaHealthDueToEating)+"</center></div>");
 
   balance+=deltaMoneyDueToSpending+deltaMoneyDueToWorking;
   health+=deltaHealthDueToSleep+deltaHealthDueToEating;
