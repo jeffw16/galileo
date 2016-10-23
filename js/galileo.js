@@ -249,30 +249,30 @@ function processDay(){
 }
 
 function init(){
-  $("#science_hours").change(function(){
+  $("#science_hours").on('input',function(){
     scienceHours = parseInt($("#science_hours").val());
     $("#science_hours_label").html($("#science_hours").val());
     adjustTimeMaxes();
   });
 
-  $("#working_hours").change(function(){
+  $("#working_hours").on('input',function(){
     workingHours = parseInt($("#working_hours").val());
     $("#working_hours_label").html($("#working_hours").val());
     adjustTimeMaxes();
   });
 
-  $("#eating_hours").change(function(){
+  $("#eating_hours").on('input',function(){
     eatingHours = parseInt($("#eating_hours").val());
     adjustTimeMaxes();
   });
 
-  $("#science_money").change(function(){
+  $("#science_money").on('input',function(){
     scienceMoney = parseInt($("#science_money").val());
     $("#science_money_label").html($("#science_money").val());
     adjustMoneyMaxes();
   });
 
-  $("#eating_money").change(function(){
+  $("#eating_money").on('input',function(){
     eatingMoney = parseInt($("#eating_money").val());
     $("#eating_money_label").html($("#eating_money").val());
     adjustMoneyMaxes();
