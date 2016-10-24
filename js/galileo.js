@@ -261,7 +261,7 @@ function init(){
     adjustTimeMaxes();
   });
 
-  $("#eating_hours").on('input',function(){
+  $("#eating_hours").change(function(){
     eatingHours = parseInt($("#eating_hours").val());
     adjustTimeMaxes();
   });
