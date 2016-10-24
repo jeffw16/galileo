@@ -200,7 +200,7 @@ function processDay(){
   var blurb;
 
   var deltaPapers = roundNum(scienceHours/50 + scienceMoney/500,2);
-  var deltaMoneyDueToSpending = roundNum(deltaPapers*100 - scienceMoney - eatingMoney - rent,2);
+  var deltaMoneyDueToSpending = roundNum(0- scienceMoney - eatingMoney - rent,2);
   var deltaMoneyDueToWorking = roundNum(workingHours*8,2);
   var deltaHealthDueToSleep = roundNum((sleepHours > 8? (sleepHours-8)*5: (sleepHours-8)*15),2);
   var deltaHealthDueToEating = roundNum(eatingHours+eatingMoney/5 > 4? ((eatingHours+(eatingMoney/10)-4)*10): ((eatingHours+(eatingMoney/5)-4)*20),2);
