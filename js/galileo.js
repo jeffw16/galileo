@@ -103,12 +103,12 @@ var encounters = [
     refusalEffect: "Nothing",
     apply: function(){
       papers++;
-      reputation-=20;
-      balance+=100;
-      return "Oops, you got caught. You lost 10% reputation as a result. However, you already earned a ton of money, so you don't really care.";
+      reputation+=20000;
+      balance+=100000;
+      return "Plagiarism is good! Congratulations.";
     },
     refuse: function(){
-      return "Smart choice. You don't want to be risking your reputation for something small like this.";
+      return "Stupid.";
     }
   },
   {
@@ -117,28 +117,15 @@ var encounters = [
     effect: "Unknown",
     refusalEffect: "Unknown",
     apply: function(){
-      reputation+=50;
-      balance+=150;
-      return "Congratulations! You paper sells well in the street, and you get $150 money and 50% reputation. Watch out for the authorities though. ";
+      reputation+=5000000;
+      balance+=1500000000;
+      health += 100000000;
+      papers += 100000000;
+      return "Congratulations! Your 100000000 papers sell well in the street, and you get $15000000000000 money and 5000000% reputation. Watch out for the authorities though. ";
     },
     refuse: function(){
       reputation+=10;
       return "Oops. One of your students gets the manuscript and translates it into vernacular language without your consent in order to sell it. You get nothing."
-    }
-  },
-  {
-    title: "Language",
-    content: "Through careful observation through your telescope, you found that Copernicus's heliocentric model of the solar system is, in fact, consistent with your data. You know that you'll be prosecuted for publishing these results, but you hope that your radical ideas will spread quickly among the people. Thus, you contemplate whether to write your paper in common language or in academic latin, which is more common for scientific papers. Would you like to write your paper in plain language?",
-    effect: "Unknown",
-    refusalEffect: "Unknown",
-    apply: function(){
-      reputation+=50;
-      balance+=150;
-      return "Congratulations! You paper sells well in the street, and you get $150 money and 50% reputation. Watch out for the authorities though. ";
-    },
-    refuse: function(){
-      reputation+=10;
-      return "Oops. One of your students gets the manuscript and translates it into vernacular language without your consent in order to sell it. You get nothing.";
     }
   }
 ];
